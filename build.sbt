@@ -29,18 +29,20 @@ inThisBuild(
   )
 )
 
+lazy val menucoo = 
+  project.in(file("."))
+    .aggregate(menucooApi).settings(
+      name := "menucoo"
+    )
+
 // *****************************************************************************
 // Projects
 // *****************************************************************************
 
-lazy val menucoo =
-  project
-    .in(file("."))
+lazy val menucooApi =
+  project.in(file("menucoo-api"))
     .enablePlugins(AutomateHeaderPlugin)
     .configs(IntegrationTest)
-    .settings(
-      name := "menucoo"
-    )
     .settings(scalafmtSettings)
     .settings(
       Defaults.itSettings,
