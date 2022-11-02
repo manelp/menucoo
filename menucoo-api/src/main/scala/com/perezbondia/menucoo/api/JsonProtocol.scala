@@ -19,27 +19,23 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.config
+package com.perezbondia.menucoo.api
 
-import com.comcast.ip4s._
-import pureconfig._
-import com.perezbondia.menucoo.types._
+import io.circe._
+import io.circe.generic.semiauto._
 
-/** The service configuration.
-  *
-  * @param host
-  *   The hostname the service will listen on.
-  * @param port
-  *   The port number the service will listen on.
-  */
-final case class ServiceConfig(host: Host, port: Port)
+import com.perezbondia.menucoo.core.model._
+import com.perezbondia.menucoo.api.model._
 
-object ServiceConfig {
-  // The default configuration key to lookup the service configuration.
-  final val CONFIG_KEY: ConfigKey = ConfigKey("service")
+object JsonProtocol {
 
-  given ConfigReader[Host]          = ConfigReader.fromStringOpt(Host.fromString)
-  given ConfigReader[Port]          = ConfigReader.fromStringOpt(Port.fromString)
-  given ConfigReader[ServiceConfig] = ConfigReader.forProduct2("host", "port")(ServiceConfig.apply)
+  given Codec[GenericError] = deriveCodec[GenericError]
+
+  given Codec[Dish]     = deriveCodec[Dish]
+  given Codec[HomeMenu] = deriveCodec[HomeMenu]
+  given Codec[OutMenu] = deriveCodec[OutMenu]
+  given Codec[Menu] = deriveCodec[Menu]
+  given Codec[DayMenu]  = deriveCodec[DayMenu]
+  given Codec[WeekMenu] = deriveCodec[WeekMenu]
 
 }

@@ -45,6 +45,8 @@ src_managed/
 project/boot/
 .history
 .cache
+# vscode
+.vscode
 # Vim
 .*.sw[a-z]
 *.un~

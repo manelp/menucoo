@@ -21,39 +21,47 @@
 
 package com.perezbondia.menucoo.api
 
+import cats.effect.kernel.Async
+import cats.effect.kernel.Sync
+import cats.implicits._
+import org.http4s._
+import org.http4s.circe._
+import org.http4s.dsl._
 import sttp.model._
 import sttp.tapir._
 import sttp.tapir.CodecFormat.TextPlain
+import sttp.tapir.generic.auto._
+import sttp.tapir.json.circe._
+import org.http4s.HttpRoutes
+import sttp.model._
+import sttp.tapir.Codec.PlainCodec
+import sttp.tapir._
+import sttp.tapir.generic.auto._
+import sttp.tapir.json.circe._
+import sttp.tapir.server.http4s._
+import com.perezbondia.menucoo.core.model._
+import com.perezbondia.menucoo.api.model._
 
-object types {
-  opaque type NameParameter = String
-  object NameParameter {
+final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 
-    given Codec[String, NameParameter, TextPlain] =
-      Codec.string.mapDecode(str =>
-        NameParameter
-          .from(str)
-          .fold(
-            sttp.tapir.DecodeResult.Error(str, new IllegalArgumentException("Invalid name parameter value!"))
-          )(name => sttp.tapir.DecodeResult.Value(name))
-      )(_.toString)
+  // private val week: HttpRoutes[F] =
+  //   Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.weekMenu.serverLogic { name =>
+  //     Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[WeekMenu])
+  //   })
 
-    /** Create an instance of NameParameter from the given String type.
-      *
-      * @param source
-      *   An instance of type String which will be returned as a NameParameter.
-      * @return
-      *   The appropriate instance of NameParameter.
-      */
-    def apply(source: String): NameParameter = source
+  // val routes: HttpRoutes[F] = week
 
-    /** Try to create an instance of NameParameter from the given String.
-      *
-      * @param source
-      *   A String that should fulfil the requirements to be converted into a NameParameter.
-      * @return
-      *   An option to the successfully converted NameParameter.
-      */
-    def from(source: String): Option[NameParameter] = Option(source).filter(_.nonEmpty)
-  }
+}
+
+object WeekMenuApi {
+
+  import JsonProtocol.given
+
+  // val weekMenu: Endpoint[Unit, Unit, GenericError, WeekMenu, Any] =
+  //   endpoint.get
+  //     .errorOut(jsonBody[GenericError])
+  //     .out(jsonBody[WeekMenu])
+  //     .description(
+  //       "Returns a simple JSON object using the provided query parameter 'name' which must not be empty."
+  //     )
 }

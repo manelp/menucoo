@@ -6,7 +6,7 @@ inThisBuild(
   Seq(
     scalaVersion := "3.2.0",
     organization := "com.perezbondia",
-    organizationName := "Manel Perz",
+    organizationName := "Manel Perez",
     startYear := Some(2022),
     licenses += ("MIT", url("https://github.com/manelp/menucoo/blob/main/LICENSE")),
     testFrameworks += new TestFramework("munit.Framework"),
@@ -56,6 +56,7 @@ lazy val menucooApi =
         library.catsCore,
         library.circeCore,
         library.circeGeneric,
+        library.circeLiteral,
         library.circeParser,
         library.doobieCore,
         library.doobieHikari,
@@ -110,6 +111,7 @@ lazy val library =
     val catsCore             = "org.typelevel"                 %% "cats-core"           % Version.cats
     val circeCore            = "io.circe"                      %% "circe-core"          % Version.circe
     val circeGeneric         = "io.circe"                      %% "circe-generic"       % Version.circe
+    val circeLiteral         = "io.circe"                      %% "circe-literal"         % Version.circe
     val circeParser          = "io.circe"                      %% "circe-parser"        % Version.circe
     val doobieCore           = "org.tpolecat"                  %% "doobie-core"         % Version.doobie
     val doobieHikari         = "org.tpolecat"                  %% "doobie-hikari"       % Version.doobie

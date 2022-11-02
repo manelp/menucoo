@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Manel Perz
+ * Copyright (c) 2022 Manel Perez
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,13 +24,16 @@ package com.perezbondia.menucoo.config
 import com.perezbondia.menucoo.types._
 import pureconfig._
 
-/**
-  * The configuration for a database connection.
+/** The configuration for a database connection.
   *
-  * @param driver The class name of the JDBC driver.
-  * @param url    A JDBC URL.
-  * @param user   The username for the connection.
-  * @param pass   The password for the connection.
+  * @param driver
+  *   The class name of the JDBC driver.
+  * @param url
+  *   A JDBC URL.
+  * @param user
+  *   The username for the connection.
+  * @param pass
+  *   The password for the connection.
   */
 final case class DatabaseConfig(
     driver: JdbcDriverName,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Manel Perz
+ * Copyright (c) 2022 Manel Perez
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -26,12 +26,14 @@ import io.circe.generic.semiauto._
 import sttp.tapir.Schema
 import com.perezbondia.menucoo.types._
 
-/**
-  * A simple model for our hello world greetings.
+/** A simple model for our hello world greetings.
   *
-  * @param title    A generic title.
-  * @param headings Some header which might be presented prominently to the user.
-  * @param message  A message for the user.
+  * @param title
+  *   A generic title.
+  * @param headings
+  *   Some header which might be presented prominently to the user.
+  * @param message
+  *   A message for the user.
   */
 final case class Greetings(title: GreetingTitle, headings: GreetingHeader, message: GreetingMessage)
 
@@ -39,16 +41,13 @@ object Greetings {
 
   given Decoder[GreetingHeader] =
     Decoder.decodeString.emap(str => GreetingHeader.from(str).toRight("Invalid GreetingHeader!"))
-  given Encoder[GreetingHeader] =
-    Encoder.encodeString.contramap[GreetingHeader](_.toString)
+  given Encoder[GreetingHeader] = Encoder.encodeString.contramap[GreetingHeader](_.toString)
   given Decoder[GreetingMessage] =
     Decoder.decodeString.emap(str => GreetingMessage.from(str).toRight("Invalid GreetingMessage!"))
-  given Encoder[GreetingMessage] =
-    Encoder.encodeString.contramap[GreetingMessage](_.toString)
+  given Encoder[GreetingMessage] = Encoder.encodeString.contramap[GreetingMessage](_.toString)
   given Decoder[GreetingTitle] =
     Decoder.decodeString.emap(str => GreetingTitle.from(str).toRight("Invalid GreetingTitle!"))
-  given Encoder[GreetingTitle] =
-    Encoder.encodeString.contramap[GreetingTitle](_.toString)
+  given Encoder[GreetingTitle] = Encoder.encodeString.contramap[GreetingTitle](_.toString)
 
   given Decoder[Greetings] = deriveDecoder[Greetings]
   given Encoder[Greetings] = deriveEncoder[Greetings]

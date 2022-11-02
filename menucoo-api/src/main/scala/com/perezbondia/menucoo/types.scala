@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Manel Perz
+ * Copyright (c) 2022 Manel Perez
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,6 +29,7 @@ object types {
 
   opaque type ConfigKey = String
   object ConfigKey {
+
     /** Create an instance of ConfigKey from the given String type.
       *
       * @param source
@@ -197,6 +198,7 @@ object types {
 
   opaque type JdbcUsername = String
   object JdbcUsername {
+
     /** Create an instance of JdbcUsername from the given String type.
       *
       * @param source

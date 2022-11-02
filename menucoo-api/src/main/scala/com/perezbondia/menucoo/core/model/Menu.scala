@@ -19,27 +19,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.config
+package com.perezbondia.menucoo.core.model
 
-import com.comcast.ip4s._
-import pureconfig._
-import com.perezbondia.menucoo.types._
+import cats.data.NonEmptyList
 
-/** The service configuration.
-  *
-  * @param host
-  *   The hostname the service will listen on.
-  * @param port
-  *   The port number the service will listen on.
-  */
-final case class ServiceConfig(host: Host, port: Port)
+sealed trait Menu
 
-object ServiceConfig {
-  // The default configuration key to lookup the service configuration.
-  final val CONFIG_KEY: ConfigKey = ConfigKey("service")
+final case class HomeMenu(dishes: List[Dish]) extends Menu
 
-  given ConfigReader[Host]          = ConfigReader.fromStringOpt(Host.fromString)
-  given ConfigReader[Port]          = ConfigReader.fromStringOpt(Port.fromString)
-  given ConfigReader[ServiceConfig] = ConfigReader.forProduct2("host", "port")(ServiceConfig.apply)
-
-}
+final case class OutMenu(description: String) extends Menu

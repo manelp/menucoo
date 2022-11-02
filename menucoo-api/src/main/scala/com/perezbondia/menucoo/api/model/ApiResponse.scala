@@ -19,27 +19,15 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.config
+package com.perezbondia.menucoo.api.model
 
-import com.comcast.ip4s._
-import pureconfig._
-import com.perezbondia.menucoo.types._
+import scala.util.control.NoStackTrace
 
-/** The service configuration.
-  *
-  * @param host
-  *   The hostname the service will listen on.
-  * @param port
-  *   The port number the service will listen on.
-  */
-final case class ServiceConfig(host: Host, port: Port)
+sealed trait ApiResponse
 
-object ServiceConfig {
-  // The default configuration key to lookup the service configuration.
-  final val CONFIG_KEY: ConfigKey = ConfigKey("service")
-
-  given ConfigReader[Host]          = ConfigReader.fromStringOpt(Host.fromString)
-  given ConfigReader[Port]          = ConfigReader.fromStringOpt(Port.fromString)
-  given ConfigReader[ServiceConfig] = ConfigReader.forProduct2("host", "port")(ServiceConfig.apply)
-
+sealed trait ApiError extends Exception with ApiResponse with NoStackTrace {
+  val message: String
+  val description: String
 }
+
+final case class GenericError(message: String, description: String) extends ApiError

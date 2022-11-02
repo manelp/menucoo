@@ -12,7 +12,7 @@ support you.
 
 ## Additions to C4.2
 
-1. This project uses the MPLv2 license (see [LICENSE](LICENSE)).
+1. This project uses the MIT license (see [LICENSE](LICENSE)).
 2. The project SHALL have one branch ("main") that always holds the latest 
 in-progress version and SHOULD always build.
 4. Contributors are listed in the file [AUTHORS.md](AUTHORS.md). Add

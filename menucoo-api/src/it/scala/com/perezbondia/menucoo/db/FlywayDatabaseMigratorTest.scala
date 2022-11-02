@@ -56,8 +56,8 @@ final class FlywayDatabaseMigratorTest extends CatsEffectSuite {
           .dataSource(dbConfig.url.toString, dbConfig.user.toString, dbConfig.pass.toString)
           .cleanDisabled(false)
           .load()
-      val _              = flyway.migrate()
-      val _              = flyway.clean()
+      val _ = flyway.migrate()
+      val _ = flyway.clean()
     }
 
     override def afterEach(context: AfterEach): Unit = {
@@ -67,8 +67,8 @@ final class FlywayDatabaseMigratorTest extends CatsEffectSuite {
           .dataSource(dbConfig.url.toString, dbConfig.user.toString, dbConfig.pass.toString)
           .cleanDisabled(false)
           .load()
-      val _              = flyway.migrate()
-      val _              = flyway.clean()
+      val _ = flyway.migrate()
+      val _ = flyway.clean()
     }
   }
 
