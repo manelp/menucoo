@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api.model
+package com.menucoo.api.model
 
 import scala.util.control.NoStackTrace
 

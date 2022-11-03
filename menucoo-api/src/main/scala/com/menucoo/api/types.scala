@@ -19,11 +19,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.api
 
 import sttp.model._
-import sttp.tapir._
 import sttp.tapir.CodecFormat.TextPlain
+import sttp.tapir._
 
 object types {
   opaque type NameParameter = String

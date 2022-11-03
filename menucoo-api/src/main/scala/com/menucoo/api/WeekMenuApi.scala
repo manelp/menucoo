@@ -19,28 +19,30 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.api
 
 import cats.effect.kernel.Async
 import cats.effect.kernel.Sync
 import cats.implicits._
+
+import org.http4s.HttpRoutes
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl._
 import sttp.model._
-import sttp.tapir._
-import sttp.tapir.CodecFormat.TextPlain
-import sttp.tapir.generic.auto._
-import sttp.tapir.json.circe._
-import org.http4s.HttpRoutes
 import sttp.model._
 import sttp.tapir.Codec.PlainCodec
+import sttp.tapir.CodecFormat.TextPlain
+import sttp.tapir._
 import sttp.tapir._
 import sttp.tapir.generic.auto._
+import sttp.tapir.generic.auto._
+import sttp.tapir.json.circe._
 import sttp.tapir.json.circe._
 import sttp.tapir.server.http4s._
-import com.perezbondia.menucoo.core.model._
-import com.perezbondia.menucoo.api.model._
+
+import com.menucoo.api.model._
+import com.menucoo.core.model._
 
 final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 

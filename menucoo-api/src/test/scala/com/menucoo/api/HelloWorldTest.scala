@@ -19,16 +19,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.api
 
 import cats.effect._
-import com.perezbondia.menucoo.Greetings
-import com.perezbondia.menucoo.types._
+
 import munit._
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.implicits._
 import org.http4s.server.Router
+
+import com.menucoo.Greetings
+import com.menucoo.types._
 
 class HelloWorldTest extends CatsEffectSuite {
 

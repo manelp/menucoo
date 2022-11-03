@@ -19,14 +19,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo
+package com.menucoo
 
 import cats.effect._
 import cats.syntax.all._
+
 import com.typesafe.config._
-import com.perezbondia.menucoo.api._
-import com.perezbondia.menucoo.config._
-import com.perezbondia.menucoo.db.FlywayDatabaseMigrator
 import org.http4s.ember.server._
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -36,6 +34,10 @@ import sttp.apispec.openapi.circe.yaml._
 import sttp.tapir.docs.openapi._
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.SwaggerUI
+
+import com.menucoo.api._
+import com.menucoo.config._
+import com.menucoo.db.FlywayDatabaseMigrator
 
 object Server extends IOApp {
   val log = LoggerFactory.getLogger(Server.getClass())

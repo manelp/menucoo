@@ -5,7 +5,7 @@
 inThisBuild(
   Seq(
     scalaVersion := "3.2.0",
-    organization := "com.perezbondia",
+    organization := "com.menucoo",
     organizationName := "Manel Perez",
     startYear := Some(2022),
     licenses += ("MIT", url("https://github.com/manelp/menucoo/blob/main/LICENSE")),
@@ -26,7 +26,8 @@ inThisBuild(
     scalafmtOnCompile := false,
     Compile / console / scalacOptions --= Seq("-Xfatal-warnings"),
     Test / console / scalacOptions --= Seq("-Xfatal-warnings"),
-    Test / fork := true
+    Test / fork := true,
+    scalafixDependencies += "com.nequissimus" %% "sort-imports" % "0.3.1"
   )
 )
 

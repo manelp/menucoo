@@ -6,11 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package com.perezbondia.menucoo.db
+package com.menucoo.db
 
 import com.typesafe.config.ConfigFactory
-import com.perezbondia.menucoo.config._
-import com.perezbondia.menucoo.types._
+import com.menucoo.config._
+import com.menucoo.types._
 import munit._
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.FlywayException

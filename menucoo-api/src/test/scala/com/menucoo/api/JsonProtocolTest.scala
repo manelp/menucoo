@@ -19,16 +19,17 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.api
 
-import munit.CatsEffectSuite
-import com.perezbondia.menucoo.core.model._
+import cats.effect.IO
 
 import JsonProtocol.given
-import io.circe.syntax._
 import io.circe.Json
 import io.circe.parser.parse
-import cats.effect.IO
+import io.circe.syntax._
+import munit.CatsEffectSuite
+
+import com.menucoo.core.model._
 
 class JsonProtocolTest extends CatsEffectSuite {
 

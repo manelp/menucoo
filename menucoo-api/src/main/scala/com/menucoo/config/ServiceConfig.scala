@@ -19,20 +19,28 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.config
+package com.menucoo.config
 
-import com.typesafe.config.ConfigFactory
-import munit._
+import com.comcast.ip4s._
 import pureconfig._
 
-class DatabaseConfigTest extends FunSuite {
+import com.menucoo.types._
 
-  test("DatabaseConfig must load the default application.conf correctly") {
-    val cfg = ConfigFactory.load(getClass().getClassLoader())
-    ConfigSource.fromConfig(cfg).at(DatabaseConfig.CONFIG_KEY.toString).load[DatabaseConfig] match {
-      case Left(e)  => fail(e.toList.mkString(", "))
-      case Right(_) => assert(true)
-    }
-  }
+/** The service configuration.
+  *
+  * @param host
+  *   The hostname the service will listen on.
+  * @param port
+  *   The port number the service will listen on.
+  */
+final case class ServiceConfig(host: Host, port: Port)
+
+object ServiceConfig {
+  // The default configuration key to lookup the service configuration.
+  final val CONFIG_KEY: ConfigKey = ConfigKey("service")
+
+  given ConfigReader[Host]          = ConfigReader.fromStringOpt(Host.fromString)
+  given ConfigReader[Port]          = ConfigReader.fromStringOpt(Port.fromString)
+  given ConfigReader[ServiceConfig] = ConfigReader.forProduct2("host", "port")(ServiceConfig.apply)
 
 }

@@ -19,32 +19,28 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.db
+package com.menucoo.api
 
-import cats.effect.IO
-import org.flywaydb.core.Flyway
-import org.flywaydb.core.api.output.MigrateResult
-import com.perezbondia.menucoo.types._
+import io.circe._
+import io.circe.generic.semiauto._
+import sttp.tapir.Codec.PlainCodec
+import sttp.tapir.DecodeResult
+import sttp.tapir.{ Codec => TapirCodec }
 
-final class FlywayDatabaseMigrator {
+import com.menucoo.api.model._
+import com.menucoo.core.model._
 
-  /** Apply pending migrations to the database.
-    *
-    * @param url
-    *   A JDBC database connection url.
-    * @param user
-    *   The login name for the connection.
-    * @param pass
-    *   The password for the connection.
-    * @return
-    *   A migrate result object holding information about executed migrations and the schema. See the Java-Doc of Flyway
-    *   for details.
-    */
-  def migrate(url: JdbcUrl, user: JdbcUsername, pass: JdbcPassword): IO[MigrateResult] =
-    IO {
-      val flyway: Flyway =
-        Flyway.configure().dataSource(url.toString, user.toString, pass.toString).load()
-      flyway.migrate()
-    }
+object JsonProtocol {
+
+  given Codec[GenericError] = deriveCodec[GenericError]
+
+  given Codec[Dish]     = deriveCodec[Dish]
+  given Codec[HomeMenu] = deriveCodec[HomeMenu]
+  given Codec[OutMenu]  = deriveCodec[OutMenu]
+  given Codec[Menu]     = deriveCodec[Menu]
+  given Codec[DayMenu]  = deriveCodec[DayMenu]
+  given Codec[WeekMenu] = deriveCodec[WeekMenu]
+
+  given PlainCodec[MenuId] = TapirCodec.string.mapDecode(x => DecodeResult.Value(MenuId(x)))(_.toString)
 
 }

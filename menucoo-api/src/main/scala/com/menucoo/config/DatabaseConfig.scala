@@ -19,10 +19,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.config
+package com.menucoo.config
 
-import com.perezbondia.menucoo.types._
 import pureconfig._
+
+import com.menucoo.types._
 
 /** The configuration for a database connection.
   *

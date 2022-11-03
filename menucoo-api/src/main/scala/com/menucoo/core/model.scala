@@ -19,28 +19,29 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.core
 
-import io.circe._
-import io.circe.generic.semiauto._
-import sttp.tapir.Codec.PlainCodec
-import sttp.tapir.{ Codec => TapirCodec }
+object model {
+  final case class WeekMenu(
+      monday: DayMenu,
+      tuesday: DayMenu,
+      wednesday: DayMenu,
+      thursday: DayMenu,
+      friday: DayMenu,
+      saturday: DayMenu,
+      sunday: DayMenu
+  )
 
-import com.perezbondia.menucoo.core.model._
-import com.perezbondia.menucoo.api.model._
-import sttp.tapir.DecodeResult
+  final case class MenuId(id: String) extends Product with Serializable
 
-object JsonProtocol {
+  sealed trait Menu
 
-  given Codec[GenericError] = deriveCodec[GenericError]
+  final case class HomeMenu(dishes: List[Dish]) extends Menu
 
-  given Codec[Dish]     = deriveCodec[Dish]
-  given Codec[HomeMenu] = deriveCodec[HomeMenu]
-  given Codec[OutMenu]  = deriveCodec[OutMenu]
-  given Codec[Menu]     = deriveCodec[Menu]
-  given Codec[DayMenu]  = deriveCodec[DayMenu]
-  given Codec[WeekMenu] = deriveCodec[WeekMenu]
+  final case class OutMenu(description: String) extends Menu
 
-  given PlainCodec[MenuId] = TapirCodec.string.mapDecode(x => DecodeResult.Value(MenuId(x)))(_.toString)
+  final case class Dish(name: String, description: Option[String])
+
+  final case class DayMenu(lunch: Option[Menu], dinner: Option[Menu])
 
 }

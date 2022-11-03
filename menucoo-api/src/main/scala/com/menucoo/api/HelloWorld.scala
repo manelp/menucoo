@@ -19,22 +19,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo.api
+package com.menucoo.api
 
 import cats.effect._
 import cats.syntax.all._
-import com.perezbondia.menucoo.Greetings
-import com.perezbondia.menucoo.api.types._
-import com.perezbondia.menucoo.types._
+
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl._
 import sttp.model._
-import sttp.tapir._
 import sttp.tapir.CodecFormat.TextPlain
+import sttp.tapir._
 import sttp.tapir.generic.auto._
 import sttp.tapir.json.circe._
 import sttp.tapir.server.http4s._
+
+import com.menucoo.Greetings
+import com.menucoo.api.types._
+import com.menucoo.types._
 
 final class HelloWorld[F[_]: Async] extends Http4sDsl[F] {
   final val message: GreetingMessage = GreetingMessage("This is a fancy message directly from http4s! :-)")

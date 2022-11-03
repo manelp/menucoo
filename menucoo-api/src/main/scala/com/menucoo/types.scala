@@ -19,11 +19,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo
-
-import sttp.tapir.Schema
+package com.menucoo
 
 import scala.util.matching.Regex
+
+import sttp.tapir.Schema
 
 object types {
 

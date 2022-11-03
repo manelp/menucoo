@@ -19,12 +19,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.perezbondia.menucoo
+package com.menucoo
 
 import io.circe._
 import io.circe.generic.semiauto._
 import sttp.tapir.Schema
-import com.perezbondia.menucoo.types._
+
+import com.menucoo.types._
 
 /** A simple model for our hello world greetings.
   *
