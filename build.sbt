@@ -19,7 +19,8 @@ inThisBuild(
       "-language:higherKinds",
       "-language:implicitConversions",
       "-unchecked",
-      "-Xfatal-warnings", // Should be enabled if feasible.
+      "-Xfatal-warnings", // Should be enabled if feasible.,
+      "-Xmax-inlines","64", // Solves a problem with tapir / circe inline
       "-Ykind-projector"
     ),
     scalafmtOnCompile := false,

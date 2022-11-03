@@ -23,9 +23,12 @@ package com.perezbondia.menucoo.api
 
 import io.circe._
 import io.circe.generic.semiauto._
+import sttp.tapir.Codec.PlainCodec
+import sttp.tapir.{ Codec => TapirCodec }
 
 import com.perezbondia.menucoo.core.model._
 import com.perezbondia.menucoo.api.model._
+import sttp.tapir.DecodeResult
 
 object JsonProtocol {
 
@@ -33,9 +36,11 @@ object JsonProtocol {
 
   given Codec[Dish]     = deriveCodec[Dish]
   given Codec[HomeMenu] = deriveCodec[HomeMenu]
-  given Codec[OutMenu] = deriveCodec[OutMenu]
-  given Codec[Menu] = deriveCodec[Menu]
+  given Codec[OutMenu]  = deriveCodec[OutMenu]
+  given Codec[Menu]     = deriveCodec[Menu]
   given Codec[DayMenu]  = deriveCodec[DayMenu]
   given Codec[WeekMenu] = deriveCodec[WeekMenu]
+
+  given PlainCodec[MenuId] = TapirCodec.string.mapDecode(x => DecodeResult.Value(MenuId(x)))(_.toString)
 
 }

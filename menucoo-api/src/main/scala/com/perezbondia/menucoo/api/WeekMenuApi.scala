@@ -44,12 +44,12 @@ import com.perezbondia.menucoo.api.model._
 
 final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 
-  // private val week: HttpRoutes[F] =
-  //   Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.weekMenu.serverLogic { name =>
-  //     Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[WeekMenu])
-  //   })
+  private val week: HttpRoutes[F] =
+    Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.weekMenu.serverLogic { menuId =>
+      Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[WeekMenu])
+    })
 
-  // val routes: HttpRoutes[F] = week
+  val routes: HttpRoutes[F] = week
 
 }
 
@@ -57,11 +57,22 @@ object WeekMenuApi {
 
   import JsonProtocol.given
 
-  // val weekMenu: Endpoint[Unit, Unit, GenericError, WeekMenu, Any] =
-  //   endpoint.get
-  //     .errorOut(jsonBody[GenericError])
-  //     .out(jsonBody[WeekMenu])
-  //     .description(
-  //       "Returns a simple JSON object using the provided query parameter 'name' which must not be empty."
-  //     )
+  val menuRoot: Endpoint[Unit, Unit, Unit, Unit, Any] =
+    endpoint
+      .in("api")
+      .in("v1")
+      .in("menu")
+
+  val menuId: Endpoint[Unit, MenuId, Unit, Unit, Any] =
+    menuRoot.in(path[MenuId]("menuId"))
+
+  val weekMenu: Endpoint[Unit, MenuId, GenericError, WeekMenu, Any] =
+    menuId
+      .in("week")
+      .get
+      .errorOut(jsonBody[GenericError])
+      .out(jsonBody[WeekMenu].description("The week menu json representation"))
+      .description(
+        "Returns a simple JSON object using the provided query parameter 'name' which must not be empty."
+      )
 }
