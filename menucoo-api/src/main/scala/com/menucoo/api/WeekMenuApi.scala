@@ -46,12 +46,12 @@ import com.menucoo.core.model._
 
 final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 
-  private val week: HttpRoutes[F] =
-    Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.weekMenu.serverLogic { menuId =>
+  private val weekGet: HttpRoutes[F] =
+    Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.menuGet.serverLogic { menuId =>
       Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[WeekMenu])
     })
 
-  val routes: HttpRoutes[F] = week
+  val routes: HttpRoutes[F] = weekGet
 
 }
 
@@ -68,13 +68,10 @@ object WeekMenuApi {
   val menuId: Endpoint[Unit, MenuId, Unit, Unit, Any] =
     menuRoot.in(path[MenuId]("menuId"))
 
-  val weekMenu: Endpoint[Unit, MenuId, GenericError, WeekMenu, Any] =
-    menuId
-      .in("week")
-      .get
+  val menuGet: Endpoint[Unit, MenuId, GenericError, WeekMenu, Any] =
+    menuId.get
       .errorOut(jsonBody[GenericError])
       .out(jsonBody[WeekMenu].description("The week menu json representation"))
-      .description(
-        "Returns a simple JSON object using the provided query parameter 'name' which must not be empty."
-      )
+      .description("Return the week menu.")
+
 }

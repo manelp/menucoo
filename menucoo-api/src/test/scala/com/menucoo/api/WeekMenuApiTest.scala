@@ -21,40 +21,40 @@
 
 package com.menucoo.api
 
-import munit.CatsEffectSuite
-import org.http4s.Status
-import cats.effect.kernel.Resource
-import org.http4s.HttpRoutes
-import org.http4s.circe._
-import org.http4s.implicits._
 import cats.effect.IO
 import cats.effect.kernel.Ref
-import org.http4s.server.Router
-import org.http4s.Uri
+import cats.effect.kernel.Resource
 
-import com.menucoo.test.TestHelpers._
-import org.http4s.Request
-import org.http4s.Method
-import org.typelevel.ci.CIString
-import com.menucoo.api.model.GenericError
+import munit.CatsEffectSuite
 import org.http4s.EntityDecoder
+import org.http4s.HttpRoutes
+import org.http4s.Method
+import org.http4s.Request
+import org.http4s.Status
+import org.http4s.Uri
+import org.http4s.circe._
+import org.http4s.implicits._
+import org.http4s.server.Router
+import org.typelevel.ci.CIString
+
+import com.menucoo.api.model.GenericError
+import com.menucoo.test.TestHelpers._
 
 class WeekMenuApiTest extends CatsEffectSuite {
 
   import JsonProtocol.given
 
-  given EntityDecoder[IO, GenericError]    = jsonOf
-  
+  given EntityDecoder[IO, GenericError] = jsonOf
 
-  test("GET /api/v1/menu/{id}/week returns week menu"){
-    val expectedStatusCode  = Status.BadRequest
-    
+  test("GET /api/v1/menu/{id} returns week menu") {
+    val expectedStatusCode = Status.BadRequest
+
     val expectedContentType = "application/json"
-    val expectedBody = GenericError("not.implemented", "Not implemented")
+    val expectedBody        = GenericError("not.implemented", "Not implemented")
 
     val response = testResources().use { service =>
       for {
-        uri <- Uri.fromString("/api/v1/menu/1/week").toOption.getOrThrow
+        uri <- Uri.fromString("/api/v1/menu/1").toOption.getOrThrow
         request = Request[IO](method = Method.GET, uri = uri)
         response <- service.orNotFound.run(request)
       } yield response
@@ -69,7 +69,6 @@ class WeekMenuApiTest extends CatsEffectSuite {
 
   }
 
-  def testResources(): Resource[IO, HttpRoutes[IO]] =
-    Resource.eval(IO(Router("/" -> new WeekMenuApi[IO]().routes)))
-    
+  def testResources(): Resource[IO, HttpRoutes[IO]] = Resource.eval(IO(Router("/" -> new WeekMenuApi[IO]().routes)))
+
 }

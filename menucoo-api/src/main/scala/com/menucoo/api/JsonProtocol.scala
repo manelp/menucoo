@@ -42,5 +42,7 @@ object JsonProtocol {
   given Codec[WeekMenu] = deriveCodec[WeekMenu]
 
   given PlainCodec[MenuId] = TapirCodec.string.mapDecode(x => DecodeResult.Value(MenuId(x)))(_.toString)
+  given PlainCodec[YearWeekNumber] =
+    TapirCodec.string.mapDecode(x => DecodeResult.fromOption(YearWeekNumber.from(x)))(_.toString)
 
 }

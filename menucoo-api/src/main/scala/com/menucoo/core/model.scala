@@ -21,6 +21,15 @@
 
 package com.menucoo.core
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+import scala.util.Try
+
+import cats.implicits._
+
+import sttp.tapir.Schema
+
 object model {
   final case class WeekMenu(
       monday: DayMenu,
@@ -33,6 +42,35 @@ object model {
   )
 
   final case class MenuId(id: String) extends Product with Serializable
+
+  opaque type YearWeekNumber = String
+  object YearWeekNumber {
+
+    given Schema[YearWeekNumber] = Schema.string
+
+    /** Create an instance of YearWeekNumber from the given String type.
+      *
+      * @param source
+      *   An instance of type String which will be returned as a YearWeekNumber.
+      * @return
+      *   The appropriate instance of YearWeekNumber.
+      */
+    def apply(source: String): YearWeekNumber = source
+
+    /** Try to create an instance of YearWeekNumber from the given String.
+      *
+      * @param source
+      *   A String that should fulfil the requirements to be converted into a YearWeekNumber.
+      * @return
+      *   An option to the successfully converted YearWeekNumber.
+      */
+    def from(source: String): Option[YearWeekNumber] = {
+      val isoWeek = DateTimeFormatter.ISO_WEEK_DATE
+      val res     = Try(LocalDate.parse(s"$source-1", isoWeek)).map(_ => YearWeekNumber(source)).toOption
+      println(res)
+      res
+    }
+  }
 
   sealed trait Menu
 
