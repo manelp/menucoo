@@ -21,8 +21,11 @@
 
 package com.menucoo.core
 
+import java.nio.ByteBuffer
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Base64
+import java.util.UUID
 
 import scala.util.Try
 
@@ -41,7 +44,7 @@ object model {
       sunday: DayMenu
   )
 
-  final case class MenuId(id: String) extends Product with Serializable
+  final case class MenuId(id: UUID) extends Product with Serializable
 
   opaque type YearWeekNumber = String
   object YearWeekNumber {
@@ -64,12 +67,29 @@ object model {
       * @return
       *   An option to the successfully converted YearWeekNumber.
       */
-    def from(source: String): Option[YearWeekNumber] = {
-      val isoWeek = DateTimeFormatter.ISO_WEEK_DATE
-      val res     = Try(LocalDate.parse(s"$source-1", isoWeek)).map(_ => YearWeekNumber(source)).toOption
-      println(res)
-      res
+    def from(source: String): Option[YearWeekNumber] =
+      Try(LocalDate.parse(s"$source-1", DateTimeFormatter.ISO_WEEK_DATE)).map(_ => YearWeekNumber(source)).toOption
+  }
+
+  object UUIDHelper {
+
+    extension (r: UUID) {
+      private def uuidToBytes: Array[Byte] = {
+        val bb = ByteBuffer.allocate(16)
+        bb.putLong(r.getMostSignificantBits())
+        bb.putLong(r.getLeastSignificantBits())
+        bb.array()
+      }
+      def shortString: String = new String(Base64.getUrlEncoder().encode(uuidToBytes))
     }
+    private def bytesToUUID(source: Array[Byte]) = {
+      val bb           = ByteBuffer.wrap(source)
+      val mostSigBits  = bb.getLong()
+      val leastSigBits = bb.getLong()
+      new UUID(mostSigBits, leastSigBits)
+    }
+
+    def from(source: String): Try[UUID] = Try(bytesToUUID(Base64.getUrlDecoder().decode(source.getBytes())))
   }
 
   sealed trait Menu

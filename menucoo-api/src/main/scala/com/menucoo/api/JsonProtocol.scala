@@ -21,6 +21,8 @@
 
 package com.menucoo.api
 
+import java.util.UUID
+
 import io.circe._
 import io.circe.generic.semiauto._
 import sttp.tapir.Codec.PlainCodec
@@ -28,6 +30,7 @@ import sttp.tapir.DecodeResult
 import sttp.tapir.{ Codec => TapirCodec }
 
 import com.menucoo.api.model._
+import com.menucoo.core.model.UUIDHelper.shortString
 import com.menucoo.core.model._
 
 object JsonProtocol {
@@ -40,8 +43,17 @@ object JsonProtocol {
   given Codec[Menu]     = deriveCodec[Menu]
   given Codec[DayMenu]  = deriveCodec[DayMenu]
   given Codec[WeekMenu] = deriveCodec[WeekMenu]
+  given Codec[UUID] =
+    Codec.from(
+      Decoder.decodeString.emapTry(s => UUIDHelper.from(s)),
+      (a: UUID) => Encoder.encodeString(a.shortString)
+    )
 
-  given PlainCodec[MenuId] = TapirCodec.string.mapDecode(x => DecodeResult.Value(MenuId(x)))(_.toString)
+  given Codec[CreatedResponse] = deriveCodec[CreatedResponse]
+
+  given PlainCodec[MenuId] =
+    TapirCodec.string
+      .mapDecode(s => DecodeResult.fromOption(UUIDHelper.from(s).map(MenuId.apply).toOption))(_.id.shortString)
   given PlainCodec[YearWeekNumber] =
     TapirCodec.string.mapDecode(x => DecodeResult.fromOption(YearWeekNumber.from(x)))(_.toString)
 

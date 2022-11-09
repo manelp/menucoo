@@ -46,12 +46,17 @@ import com.menucoo.core.model._
 
 final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 
-  private val weekGet: HttpRoutes[F] =
+  private val menuGetRoute: HttpRoutes[F] =
     Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.menuGet.serverLogic { menuId =>
       Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[WeekMenu])
     })
 
-  val routes: HttpRoutes[F] = weekGet
+  private val menuPutRoute: HttpRoutes[F] =
+    Http4sServerInterpreter[F]().toRoutes(WeekMenuApi.menuPut.serverLogic { case (menuId, weekMenu) =>
+      Sync[F].delay(GenericError("not.implemented", "Not implemented").asLeft[Unit])
+    })
+
+  val routes: HttpRoutes[F] = menuGetRoute <+> menuPutRoute
 
 }
 
@@ -70,8 +75,22 @@ object WeekMenuApi {
 
   val menuGet: Endpoint[Unit, MenuId, GenericError, WeekMenu, Any] =
     menuId.get
-      .errorOut(jsonBody[GenericError])
       .out(jsonBody[WeekMenu].description("The week menu json representation"))
+      .errorOut(jsonBody[GenericError])
       .description("Return the week menu.")
+
+  val menuPost: Endpoint[Unit, WeekMenu, GenericError, CreatedResponse, Any] =
+    menuRoot.put
+      .out(jsonBody[CreatedResponse])
+      .in(jsonBody[WeekMenu])
+      .errorOut(statusCode(StatusCode.BadRequest).and(jsonBody[GenericError]))
+      .description("Update the week menu.")
+
+  val menuPut: Endpoint[Unit, (MenuId, WeekMenu), GenericError, Unit, Any] =
+    menuId.put
+      .out(statusCode(StatusCode.Ok))
+      .in(jsonBody[WeekMenu])
+      .errorOut(statusCode(StatusCode.BadRequest).and(jsonBody[GenericError]))
+      .description("Update the week menu.")
 
 }

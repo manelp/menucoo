@@ -21,11 +21,13 @@
 
 package com.menucoo.api
 
+import java.util.UUID
+
 import cats.effect.IO
 
 import JsonProtocol.given
-import io.circe.Json
-import io.circe.parser.parse
+import io.circe._
+import io.circe.parser._
 import io.circe.syntax._
 import munit.CatsEffectSuite
 
@@ -56,6 +58,14 @@ class JsonProtocolTest extends CatsEffectSuite {
 
     decodedJson.assertEquals(encodedJson)
 
+  }
+
+  test("UUID shortening encoding and decoding") {
+    for {
+      uuid <- IO(UUID.randomUUID())
+      encoded = uuid.asJson
+      decoded <- IO.fromEither(encoded.as[UUID])
+    } yield assertEquals(uuid, decoded)
   }
 
 }

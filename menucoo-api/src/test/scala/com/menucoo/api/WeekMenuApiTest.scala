@@ -21,6 +21,8 @@
 
 package com.menucoo.api
 
+import java.util.UUID
+
 import cats.effect.IO
 import cats.effect.kernel.Ref
 import cats.effect.kernel.Resource
@@ -38,6 +40,7 @@ import org.http4s.server.Router
 import org.typelevel.ci.CIString
 
 import com.menucoo.api.model.GenericError
+import com.menucoo.core.model.shortString
 import com.menucoo.test.TestHelpers._
 
 class WeekMenuApiTest extends CatsEffectSuite {
@@ -46,7 +49,7 @@ class WeekMenuApiTest extends CatsEffectSuite {
 
   given EntityDecoder[IO, GenericError] = jsonOf
 
-  test("GET /api/v1/menu/{id} returns week menu") {
+  test("GET /api/v1/menu/{reducedUUID} returns week menu") {
     val expectedStatusCode = Status.BadRequest
 
     val expectedContentType = "application/json"
@@ -54,7 +57,8 @@ class WeekMenuApiTest extends CatsEffectSuite {
 
     val response = testResources().use { service =>
       for {
-        uri <- Uri.fromString("/api/v1/menu/1").toOption.getOrThrow
+        uuid <- IO(UUID.randomUUID.shortString)
+        uri  <- Uri.fromString(s"/api/v1/menu/$uuid").toOption.getOrThrow
         request = Request[IO](method = Method.GET, uri = uri)
         response <- service.orNotFound.run(request)
       } yield response
@@ -66,6 +70,27 @@ class WeekMenuApiTest extends CatsEffectSuite {
       contentType <- result.headers.get(CIString("content-type")).getOrThrow
     } yield (result.status, body, contentType.head.value)
     test.assertEquals((expectedStatusCode, expectedBody, expectedContentType))
+
+  }
+
+  test("GET /api/v1/menu/{invalidUUID} returns 404 not found") {
+    val expectedStatusCode = Status.NotFound
+
+    val expectedContentType = "application/json"
+
+    val response = testResources().use { service =>
+      for {
+        uri <- Uri.fromString(s"/api/v1/menu/1234").toOption.getOrThrow
+        request = Request[IO](method = Method.GET, uri = uri)
+        response <- service.orNotFound.run(request)
+      } yield response
+    }
+
+    val test = for {
+      result      <- response
+      contentType <- result.headers.get(CIString("content-type")).getOrThrow
+    } yield result.status
+    test.assertEquals(expectedStatusCode)
 
   }
 

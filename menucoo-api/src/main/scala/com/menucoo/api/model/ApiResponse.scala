@@ -21,13 +21,19 @@
 
 package com.menucoo.api.model
 
+import java.util.UUID
+
 import scala.util.control.NoStackTrace
 
 sealed trait ApiResponse
 
-sealed trait ApiError extends Exception with ApiResponse with NoStackTrace {
+sealed trait ApiError extends Exception with ApiResponse {
   val message: String
   val description: String
 }
 
 final case class GenericError(message: String, description: String) extends ApiError
+
+sealed trait ApiSuccess extends ApiResponse
+
+final case class CreatedResponse(id: UUID) extends ApiSuccess
