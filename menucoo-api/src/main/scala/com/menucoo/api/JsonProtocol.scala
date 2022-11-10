@@ -37,7 +37,7 @@ object JsonProtocol {
 
   given Codec[GenericError] = deriveCodec[GenericError]
 
-  given Codec[Dish]     = deriveCodec[Dish]
+  given Codec[Meal]     = deriveCodec[Meal]
   given Codec[HomeMenu] = deriveCodec[HomeMenu]
   given Codec[OutMenu]  = deriveCodec[OutMenu]
   given Codec[Menu]     = deriveCodec[Menu]

@@ -94,11 +94,11 @@ object model {
 
   sealed trait Menu
 
-  final case class HomeMenu(dishes: List[Dish]) extends Menu
+  final case class HomeMenu(meals: List[Meal]) extends Menu
 
   final case class OutMenu(description: String) extends Menu
 
-  final case class Dish(name: String, description: Option[String])
+  final case class Meal(name: String, description: Option[String])
 
   final case class DayMenu(lunch: Option[Menu], dinner: Option[Menu])
 

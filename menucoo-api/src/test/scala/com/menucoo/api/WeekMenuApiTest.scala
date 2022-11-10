@@ -40,7 +40,7 @@ import org.http4s.server.Router
 import org.typelevel.ci.CIString
 
 import com.menucoo.api.model.GenericError
-import com.menucoo.core.model.shortString
+import com.menucoo.core.model.UUIDHelper.shortString
 import com.menucoo.test.TestHelpers._
 
 class WeekMenuApiTest extends CatsEffectSuite {
