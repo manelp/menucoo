@@ -19,21 +19,36 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.menucoo.infra
+package com.menucoo.domain.model
 
-import doobie.implicits._
-import doobie.util.transactor.Transactor
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-import com.menucoo.domain.WeekMenuRepository
-import com.menucoo.domain.model.MenuId
-import com.menucoo.domain.model.WeekMenu
+import scala.util.Try
 
-final class PostgresWeekMenuRepository[F[_]](transactor: Transactor[F]) extends WeekMenuRepository[F] {
+import sttp.tapir.Schema
 
-  override def registerMenu(weekMenu: WeekMenu): F[MenuId] = ???
+opaque type YearWeekNumber = String
+object YearWeekNumber {
 
-  override def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
+  given Schema[YearWeekNumber] = Schema.string
 
-  override def retriveMenu(menuId: MenuId): F[WeekMenu] = ???
+  /** Create an instance of YearWeekNumber from the given String type.
+    *
+    * @param source
+    *   An instance of type String which will be returned as a YearWeekNumber.
+    * @return
+    *   The appropriate instance of YearWeekNumber.
+    */
+  def apply(source: String): YearWeekNumber = source
 
+  /** Try to create an instance of YearWeekNumber from the given String.
+    *
+    * @param source
+    *   A String that should fulfil the requirements to be converted into a YearWeekNumber.
+    * @return
+    *   An option to the successfully converted YearWeekNumber.
+    */
+  def from(source: String): Option[YearWeekNumber] =
+    Try(LocalDate.parse(s"$source-1", DateTimeFormatter.ISO_WEEK_DATE)).map(_ => YearWeekNumber(source)).toOption
 }

@@ -23,6 +23,8 @@ package com.menucoo.api
 
 import java.util.UUID
 
+import scala.util.Try
+
 import io.circe._
 import io.circe.generic.semiauto._
 import sttp.tapir.Codec.PlainCodec
@@ -30,30 +32,34 @@ import sttp.tapir.DecodeResult
 import sttp.tapir.{ Codec => TapirCodec }
 
 import com.menucoo.api.model._
-import com.menucoo.core.model.UUIDHelper.shortString
-import com.menucoo.core.model._
+import com.menucoo.domain.model.UUIDSyntax.shortString
+import com.menucoo.domain.model._
 
 object JsonProtocol {
 
   given Codec[GenericError] = deriveCodec[GenericError]
 
+  given Codec[UUID] =
+    Codec.from(
+      Decoder.decodeString.emapTry(s => UUIDSyntax.fromShortString(s)),
+      (a: UUID) => Encoder.encodeString(a.shortString)
+    )
+  given Codec[MealId] =
+    Codec.from(Decoder[UUID].emapTry(id => Try(MealId(id))), (a: MealId) => Encoder[UUID].apply(a.id))
   given Codec[Meal]     = deriveCodec[Meal]
   given Codec[HomeMenu] = deriveCodec[HomeMenu]
   given Codec[OutMenu]  = deriveCodec[OutMenu]
   given Codec[Menu]     = deriveCodec[Menu]
   given Codec[DayMenu]  = deriveCodec[DayMenu]
   given Codec[WeekMenu] = deriveCodec[WeekMenu]
-  given Codec[UUID] =
-    Codec.from(
-      Decoder.decodeString.emapTry(s => UUIDHelper.from(s)),
-      (a: UUID) => Encoder.encodeString(a.shortString)
-    )
 
   given Codec[CreatedResponse] = deriveCodec[CreatedResponse]
 
   given PlainCodec[MenuId] =
     TapirCodec.string
-      .mapDecode(s => DecodeResult.fromOption(UUIDHelper.from(s).map(MenuId.apply).toOption))(_.id.shortString)
+      .mapDecode(s => DecodeResult.fromOption(UUIDSyntax.fromShortString(s).map(MenuId.apply).toOption))(
+        _.id.shortString
+      )
   given PlainCodec[YearWeekNumber] =
     TapirCodec.string.mapDecode(x => DecodeResult.fromOption(YearWeekNumber.from(x)))(_.toString)
 

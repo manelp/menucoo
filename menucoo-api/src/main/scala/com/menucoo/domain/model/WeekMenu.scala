@@ -19,13 +19,36 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.menucoo.core
+package com.menucoo.domain.model
 
-import com.menucoo.core.model.MenuId
-import com.menucoo.core.model.WeekMenu
+import java.nio.ByteBuffer
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Base64
+import java.util.UUID
 
-trait WeekMenuRepository[F[_]] {
-  def registerMenu(weekMenu: WeekMenu): F[MenuId]             = ???
-  def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
-  def retriveMenu(menuId: MenuId): F[WeekMenu]                = ???
-}
+import scala.util.Try
+
+import cats.implicits._
+
+import sttp.tapir.Schema
+
+final case class WeekMenu(
+    monday: DayMenu,
+    tuesday: DayMenu,
+    wednesday: DayMenu,
+    thursday: DayMenu,
+    friday: DayMenu,
+    saturday: DayMenu,
+    sunday: DayMenu
+)
+
+final case class MenuId(id: UUID) extends Product with Serializable
+
+sealed trait Menu
+
+final case class HomeMenu(meals: List[Meal]) extends Menu
+
+final case class OutMenu(description: String) extends Menu
+
+final case class DayMenu(lunch: Option[Menu], dinner: Option[Menu])

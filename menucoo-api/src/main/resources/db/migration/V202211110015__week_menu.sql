@@ -12,7 +12,9 @@ CREATE TABLE day_menus_meals (
   id UUID NOT NULL PRIMARY KEY,
   week_menu UUID NOT NULL REFERENCES week_menus(id),
   week_day TEXT NOT NULL,
+  meal_time TEXT NOT NULL,
   meal_type TEXT NOT NULL,
-  meal UUID REFERENCES MEALS(id),
-  UNIQUE(week_menu, week_day, meal_type)
+  meal UUID REFERENCES meals(id),
+
+  UNIQUE(week_menu, week_day, meal_time)
 );

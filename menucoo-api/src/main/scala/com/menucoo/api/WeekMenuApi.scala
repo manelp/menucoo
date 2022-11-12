@@ -42,7 +42,7 @@ import sttp.tapir.json.circe._
 import sttp.tapir.server.http4s._
 
 import com.menucoo.api.model._
-import com.menucoo.core.model._
+import com.menucoo.domain.model._
 
 final class WeekMenuApi[F[_]: Async] extends Http4sDsl[F] {
 

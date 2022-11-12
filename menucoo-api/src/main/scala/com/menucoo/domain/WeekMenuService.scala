@@ -19,21 +19,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.menucoo.infra
+package com.menucoo.domain
 
-import doobie.implicits._
-import doobie.util.transactor.Transactor
-
-import com.menucoo.domain.WeekMenuRepository
 import com.menucoo.domain.model.MenuId
 import com.menucoo.domain.model.WeekMenu
 
-final class PostgresWeekMenuRepository[F[_]](transactor: Transactor[F]) extends WeekMenuRepository[F] {
+class WeekMenuService[F[_]] {
 
-  override def registerMenu(weekMenu: WeekMenu): F[MenuId] = ???
-
-  override def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
-
-  override def retriveMenu(menuId: MenuId): F[WeekMenu] = ???
-
+  def registerMenu(weekMenu: WeekMenu): F[MenuId]             = ???
+  def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
+  def retriveMenu(menuId: MenuId): F[WeekMenu]                = ???
 }

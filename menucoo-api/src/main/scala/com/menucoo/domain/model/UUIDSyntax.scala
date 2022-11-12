@@ -19,14 +19,32 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.menucoo.core
+package com.menucoo.domain.model
 
-import com.menucoo.core.model.MenuId
-import com.menucoo.core.model.WeekMenu
+import java.nio.ByteBuffer
+import java.util.Base64
+import java.util.UUID
 
-class WeekMenuService[F[_]] {
+import scala.util.Try
 
-  def registerMenu(weekMenu: WeekMenu): F[MenuId]             = ???
-  def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
-  def retriveMenu(menuId: MenuId): F[WeekMenu]                = ???
+object UUIDSyntax {
+
+  extension (r: UUID) {
+    private def uuidToBytes: Array[Byte] = {
+      val bb = ByteBuffer.allocate(16)
+      bb.putLong(r.getMostSignificantBits())
+      bb.putLong(r.getLeastSignificantBits())
+      bb.array()
+    }
+    def shortString: String = new String(Base64.getUrlEncoder().encode(uuidToBytes))
+  }
+  private def bytesToUUID(source: Array[Byte]) = {
+    val bb           = ByteBuffer.wrap(source)
+    val mostSigBits  = bb.getLong()
+    val leastSigBits = bb.getLong()
+    new UUID(mostSigBits, leastSigBits)
+  }
+
+  def fromShortString(source: String): Try[UUID] = Try(bytesToUUID(Base64.getUrlDecoder().decode(source.getBytes())))
+
 }
