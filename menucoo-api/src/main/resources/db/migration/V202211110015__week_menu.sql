@@ -8,7 +8,12 @@ CREATE TABLE week_menus (
   id UUID NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE day_menus_meals (
+CREATE TABLE day_menu {
+  id UUID NOT NULLL PRIMARY KEY,
+  
+}
+
+CREATE TABLE day_menu_meals (
   id UUID NOT NULL PRIMARY KEY,
   week_menu UUID NOT NULL REFERENCES week_menus(id),
   week_day TEXT NOT NULL,

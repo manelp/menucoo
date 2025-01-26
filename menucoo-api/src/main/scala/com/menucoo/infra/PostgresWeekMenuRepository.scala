@@ -25,15 +25,15 @@ import doobie.implicits._
 import doobie.util.transactor.Transactor
 
 import com.menucoo.domain.WeekMenuRepository
-import com.menucoo.domain.model.MenuId
+import com.menucoo.domain.model.WeekMenuId
 import com.menucoo.domain.model.WeekMenu
 
 final class PostgresWeekMenuRepository[F[_]](transactor: Transactor[F]) extends WeekMenuRepository[F] {
 
-  override def registerMenu(weekMenu: WeekMenu): F[MenuId] = ???
+  override def registerMenu(weekMenu: WeekMenu): F[WeekMenuId] = ???
 
-  override def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
+  override def updateMenu(menuId: WeekMenuId, weekMenu: WeekMenu): F[Unit] = ???
 
-  override def retriveMenu(menuId: MenuId): F[WeekMenu] = ???
+  override def retrieveMenu(menuId: WeekMenuId): F[WeekMenu] = ???
 
 }

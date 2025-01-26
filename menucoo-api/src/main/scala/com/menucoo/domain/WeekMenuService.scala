@@ -21,12 +21,12 @@
 
 package com.menucoo.domain
 
-import com.menucoo.domain.model.MenuId
+import com.menucoo.domain.model.WeekMenuId
 import com.menucoo.domain.model.WeekMenu
 
 class WeekMenuService[F[_]] {
 
-  def registerMenu(weekMenu: WeekMenu): F[MenuId]             = ???
-  def updateMenu(menuId: MenuId, weekMenu: WeekMenu): F[Unit] = ???
-  def retriveMenu(menuId: MenuId): F[WeekMenu]                = ???
+  def registerMenu(weekMenu: WeekMenu): F[WeekMenuId]             = ???
+  def updateMenu(menuId: WeekMenuId, weekMenu: WeekMenu): F[Unit] = ???
+  def retrieveMenu(menuId: WeekMenuId): F[WeekMenu]                = ???
 }

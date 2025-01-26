@@ -70,10 +70,10 @@ object WeekMenuApi {
       .in("v1")
       .in("menu")
 
-  val menuId: Endpoint[Unit, MenuId, Unit, Unit, Any] =
-    menuRoot.in(path[MenuId]("menuId"))
+  val menuId: Endpoint[Unit, WeekMenuId, Unit, Unit, Any] =
+    menuRoot.in(path[WeekMenuId]("menuId"))
 
-  val menuGet: Endpoint[Unit, MenuId, GenericError, WeekMenu, Any] =
+  val menuGet: Endpoint[Unit, WeekMenuId, GenericError, WeekMenu, Any] =
     menuId.get
       .out(jsonBody[WeekMenu].description("The week menu json representation"))
       .errorOut(jsonBody[GenericError])
@@ -86,7 +86,7 @@ object WeekMenuApi {
       .errorOut(statusCode(StatusCode.BadRequest).and(jsonBody[GenericError]))
       .description("Update the week menu.")
 
-  val menuPut: Endpoint[Unit, (MenuId, WeekMenu), GenericError, Unit, Any] =
+  val menuPut: Endpoint[Unit, (WeekMenuId, WeekMenu), GenericError, Unit, Any] =
     menuId.put
       .out(statusCode(StatusCode.Ok))
       .in(jsonBody[WeekMenu])

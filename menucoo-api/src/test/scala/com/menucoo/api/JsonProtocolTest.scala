@@ -22,31 +22,36 @@
 package com.menucoo.api
 
 import java.util.UUID
-
 import cats.effect.IO
-
 import JsonProtocol.given
-import io.circe._
-import io.circe.parser._
-import io.circe.syntax._
+import io.circe.*
+import io.circe.parser.*
+import io.circe.syntax.*
 import munit.CatsEffectSuite
-
-import com.menucoo.domain.model._
+import com.menucoo.domain.model.*
 import com.menucoo.domain.model.UUIDSyntax.shortString
+
+import java.time.{LocalTime, ZoneId}
 
 class JsonProtocolTest extends CatsEffectSuite {
 
   test("weekMenu json encoding and decoding") {
 
+    val menuId = WeekMenuId(UUID.randomUUID())
     val mealId = MealId(UUID.randomUUID())
+    val dishId = DishId(UUID.randomUUID())
+    val menuIdShort = menuId.id.shortString
     val mealIdShort = mealId.id.shortString
+    val menu = HomeMenu(List())
+    val since = LocalTime.now(ZoneId.of("UTC"))
+    val until = LocalTime.now(ZoneId.of("UTC"))
     val dayMenu = DayMenu(
-      Some(HomeMenu(List(Meal(mealId, "Rice with chicken curry", Some("Delicious curry"))))),
-      Some(OutMenu("can pizza"))
+      List(Meal(mealId, "lunch", menu, since, until))
     )
 
-    val weekMenu = WeekMenu(dayMenu, dayMenu, dayMenu, dayMenu, dayMenu, dayMenu, dayMenu)
+    val weekMenu = WeekMenu(menuId, dayMenu, dayMenu, dayMenu, dayMenu, dayMenu, dayMenu, dayMenu)
     val weekMenuString = s"""{
+      |"id":"$menuIdShort",
       |"monday": {"lunch": {"HomeMenu": {"meals": [{"mealId": "$mealIdShort", "name":"Rice with chicken curry", "description": "Delicious curry"}]}}, "dinner":{"OutMenu":{"description": "can pizza"}}},
       |"tuesday": {"lunch": {"HomeMenu": {"meals": [{"mealId": "$mealIdShort", "name":"Rice with chicken curry", "description": "Delicious curry"}]}}, "dinner":{"OutMenu":{"description": "can pizza"}}},
       |"wednesday": {"lunch": {"HomeMenu": {"meals": [{"mealId": "$mealIdShort", "name":"Rice with chicken curry", "description": "Delicious curry"}]}}, "dinner":{"OutMenu":{"description": "can pizza"}}},

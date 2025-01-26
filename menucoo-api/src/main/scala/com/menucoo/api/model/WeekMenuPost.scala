@@ -19,11 +19,28 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.menucoo.domain.model
+package com.menucoo.api.model
 
-import java.util.UUID
+import com.menucoo.domain.model.Meal
+import com.menucoo.domain.model.Menu
 import java.time.LocalTime
 
-final case class MealId(id: UUID) extends Product with Serializable
+sealed trait MenuRequest
 
-final case class Meal(mealId: MealId, name: String, menu: Menu, since: LocalTime, until: LocalTime)
+final case class MealPost(name: String, menu: Menu, since: LocalTime, until: LocalTime)
+
+final case class HomeMenuPost(meals: List[MealPost]) extends MenuRequest
+
+final case class OutMenuPost(description: String) extends MenuRequest
+
+final case class DayMenuPost(lunch: Option[MenuRequest], dinner: Option[MenuRequest])
+
+final case class WeekMenuPost(
+    monday: DayMenuPost,
+    tuesday: DayMenuPost,
+    wednesday: DayMenuPost,
+    thursday: DayMenuPost,
+    friday: DayMenuPost,
+    saturday: DayMenuPost,
+    sunday: DayMenuPost
+)

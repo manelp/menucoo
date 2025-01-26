@@ -33,7 +33,10 @@ import cats.implicits._
 
 import sttp.tapir.Schema
 
+final case class WeekMenuId(id: UUID) extends Product with Serializable
+
 final case class WeekMenu(
+    id: WeekMenuId,
     monday: DayMenu,
     tuesday: DayMenu,
     wednesday: DayMenu,
@@ -43,12 +46,10 @@ final case class WeekMenu(
     sunday: DayMenu
 )
 
-final case class MenuId(id: UUID) extends Product with Serializable
-
 sealed trait Menu
 
-final case class HomeMenu(meals: List[Meal]) extends Menu
+final case class HomeMenu(dishes: List[Dish]) extends Menu
 
 final case class OutMenu(description: String) extends Menu
 
-final case class DayMenu(lunch: Option[Menu], dinner: Option[Menu])
+final case class DayMenu(meals: List[Meal])

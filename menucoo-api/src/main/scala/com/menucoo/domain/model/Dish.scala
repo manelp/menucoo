@@ -22,8 +22,7 @@
 package com.menucoo.domain.model
 
 import java.util.UUID
-import java.time.LocalTime
 
-final case class MealId(id: UUID) extends Product with Serializable
+final case class DishId(id: UUID) extends Product with Serializable
 
-final case class Meal(mealId: MealId, name: String, menu: Menu, since: LocalTime, until: LocalTime)
+final case class Dish(id: DishId, name: String, description: Option[String])

@@ -44,6 +44,14 @@ object JsonProtocol {
       Decoder.decodeString.emapTry(s => UUIDSyntax.fromShortString(s)),
       (a: UUID) => Encoder.encodeString(a.shortString)
     )
+
+  given Codec[DishId] =
+    Codec.from(Decoder[UUID].emapTry(id => Try(DishId(id))), (a: DishId) => Encoder[UUID].apply(a.id))  
+    
+  given Codec[Dish] = deriveCodec[Dish]
+  
+  given Codec[WeekMenuId] =
+    Codec.from(Decoder[UUID].emapTry(id => Try(WeekMenuId(id))), (a: WeekMenuId) => Encoder[UUID].apply(a.id))
   given Codec[MealId] =
     Codec.from(Decoder[UUID].emapTry(id => Try(MealId(id))), (a: MealId) => Encoder[UUID].apply(a.id))
   given Codec[Meal]     = deriveCodec[Meal]
@@ -55,9 +63,9 @@ object JsonProtocol {
 
   given Codec[CreatedResponse] = deriveCodec[CreatedResponse]
 
-  given PlainCodec[MenuId] =
+  given PlainCodec[WeekMenuId] =
     TapirCodec.string
-      .mapDecode(s => DecodeResult.fromOption(UUIDSyntax.fromShortString(s).map(MenuId.apply).toOption))(
+      .mapDecode(s => DecodeResult.fromOption(UUIDSyntax.fromShortString(s).map(WeekMenuId.apply).toOption))(
         _.id.shortString
       )
   given PlainCodec[YearWeekNumber] =

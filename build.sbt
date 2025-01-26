@@ -4,7 +4,7 @@
 
 inThisBuild(
   Seq(
-    scalaVersion := "3.2.0",
+    scalaVersion := "3.6.3",
     organization := "com.menucoo",
     organizationName := "Manel Perez",
     startYear := Some(2022),
@@ -21,7 +21,7 @@ inThisBuild(
       "-unchecked",
       "-Xfatal-warnings", // Should be enabled if feasible.,
       "-Xmax-inlines","64", // Solves a problem with tapir / circe inline
-      "-Ykind-projector"
+      "-Xkind-projector"
     ),
     scalafmtOnCompile := false,
     Compile / console / scalacOptions --= Seq("-Xfatal-warnings"),
@@ -96,19 +96,19 @@ lazy val menucooApi =
 lazy val library =
   new {
     object Version {
-      val cats            = "2.8.0"
-      val circe           = "0.14.3"
-      val doobie          = "1.0.0-RC2"
-      val flyway          = "9.6.0"
-      val http4s          = "0.23.14"
-      val logback         = "1.2.11"
-      val munit           = "0.7.29"
-      val munitCatsEffect = "1.0.7"
-      val postgresql      = "42.5.0"
-      val pureConfig      = "0.17.1"
-      val scalaCheck      = "1.15.4"
-      val sttpApiSpec     = "0.3.1"
-      val tapir           = "1.1.3"
+      val cats            = "2.13.0"
+      val circe           = "0.14.10"
+      val doobie          = "1.0.0-RC6"
+      val flyway          = "11.2.0"
+      val http4s          = "0.23.30"
+      val logback         = "1.5.16"
+      val munit           = "1.1.0"
+      val munitCatsEffect = "2.0.0"
+      val postgresql      = "42.7.5"
+      val pureConfig      = "0.17.8"
+      val scalaCheck      = "1.18.1"
+      val sttpApiSpec     = "0.11.5"
+      val tapir           = "1.11.13"
     }
     val catsCore             = "org.typelevel"                 %% "cats-core"           % Version.cats
     val circeCore            = "io.circe"                      %% "circe-core"          % Version.circe
@@ -126,7 +126,7 @@ lazy val library =
     val http4sEmberClient    = "org.http4s"                    %% "http4s-ember-client" % Version.http4s
     val logback              = "ch.qos.logback"                %  "logback-classic"     % Version.logback
     val munit                = "org.scalameta"                 %% "munit"               % Version.munit
-    val munitCatsEffect      = "org.typelevel"                 %% "munit-cats-effect-3" % Version.munitCatsEffect
+    val munitCatsEffect      = "org.typelevel"                 %% "munit-cats-effect"   % Version.munitCatsEffect
     val munitScalaCheck      = "org.scalameta"                 %% "munit-scalacheck"    % Version.munit
     val postgresql           = "org.postgresql"                %  "postgresql"          % Version.postgresql
     val pureConfig           = "com.github.pureconfig"         %% "pureconfig-core"     % Version.pureConfig
